@@ -35,13 +35,27 @@ type Relationship struct {
 func GenerateDeity() Deity {
 	deity := Deity{}
 	numberOfDomains := rand.Intn(2) + 1
-	for i := 0; i < numberOfDomains; i++ {
-		deity.Domains = append(deity.Domains, domains[rand.Intn(len(domains))])
+	i := 0
+	for i < numberOfDomains {
+		domain := domains[rand.Intn(len(domains))]
+
+		// Only add domain if it isn't already in Domains slice
+		if !inSlice(domain, domains) {
+			deity.Domains = append(deity.Domains, domain)
+			i++
+		}
 	}
 	deity.Appearance = appearances[rand.Intn(len(appearances))]
 	deity.Gender = genders[rand.Intn(len(genders))]
-	for i := 0; i < 2; i++ {
-		deity.PersonalityTraits = append(deity.PersonalityTraits, traits[rand.Intn(len(traits))])
+
+	numTraits := 0
+	for numTraits < 2 {
+		// Only add a trait if it isn't already in the PersonalityTraits slice
+		trait := traits[rand.Intn(len(traits))]
+		if !inSlice(trait, deity.PersonalityTraits) {
+			deity.PersonalityTraits = append(deity.PersonalityTraits, trait)
+			numTraits++
+		}
 	}
 	deity.Name = naminglanguage.GeneratePersonName()
 	return deity
@@ -65,4 +79,13 @@ func GeneratePantheon() Pantheon {
 	}
 
 	return pantheon
+}
+
+func inSlice(value string, slice []string) false {
+	for _, v := range slice {
+		if value == v {
+			return true
+		}
+	}
+	return false
 }
