@@ -8,7 +8,6 @@ import (
 
 var (
 	descriptors = []string{"is parent to", "hates", "loves", "fears", "respects", "is amused by", "is chagrined by"}
-	domains     = []string{"life", "death", "the sun", "the moon", "nature", "hunting", "war", "balance", "chaos", "law"}
 	genders     = []string{"male", "female", "none"}
 	traits      = []string{"fierce", "proud", "humble", "quiet", "boisterous"}
 )
