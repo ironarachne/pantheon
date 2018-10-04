@@ -61,7 +61,7 @@ func GenerateDeity() Deity {
 }
 
 func GeneratePantheon() Pantheon {
-	numberOfDeities := 12
+	numberOfDeities := rand.Intn(28) + 3
 	pantheon := Pantheon{}
 
 	for i := 0; i < numberOfDeities; i++ {
