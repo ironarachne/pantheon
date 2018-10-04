@@ -9,7 +9,7 @@ import (
 var (
 	descriptors = []string{"is parent to", "hates", "loves", "fears", "respects", "is amused by", "is chagrined by"}
 	genders     = []string{"male", "female", "none"}
-	traits      = []string{"fierce", "proud", "humble", "quiet", "boisterous"}
+	traits		= getTraits()
 )
 
 type Deity struct {
@@ -80,7 +80,7 @@ func GeneratePantheon() Pantheon {
 	return pantheon
 }
 
-func inSlice(value string, slice []string) false {
+func inSlice(value string, slice []string) bool {
 	for _, v := range slice {
 		if value == v {
 			return true
