@@ -80,7 +80,7 @@ func GeneratePantheon() Pantheon {
 	return pantheon
 }
 
-func inSlice(value string, slice []string) false {
+func inSlice(value string, slice []string) bool {
 	for _, v := range slice {
 		if value == v {
 			return true
