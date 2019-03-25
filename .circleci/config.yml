@@ -1,0 +1,31 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.11
+    working_directory: /go/src/github.com/ironarachne/pantheon
+    steps:
+      - checkout
+      - run: go get -v -t -d ./...
+      - run: go test -v ./...
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: |
+          cd cmd/pantheongend
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          docker build -t ironarachne/pantheongend:$TAG -t ironarachne/pantheongend:latest .
+          docker login -u $DOCKER_USER -p $DOCKER_PASS
+          docker push ironarachne/pantheongend:$TAG
+          docker push ironarachne/pantheongend:latest
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master

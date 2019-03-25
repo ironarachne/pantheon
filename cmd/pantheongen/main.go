@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/ironarachne/pantheon"
-	"math/rand"
 	"flag"
 	"fmt"
+	"math/rand"
 	"time"
+
+	"github.com/ironarachne/pantheon"
+	"github.com/ironarachne/random"
 )
 
 func displayPantheon(pantheon pantheon.Pantheon) {
@@ -35,16 +37,16 @@ func displayPantheon(pantheon pantheon.Pantheon) {
 }
 
 func main() {
-	randomSeed := flag.Int64("s", 0, "Optional random generator seed")
+	randomSeed := flag.String("s", "now", "Optional random generator seed")
 
 	flag.Parse()
 
-	if *randomSeed == 0 {
+	if *randomSeed == "now" {
 		rand.Seed(time.Now().UnixNano())
 	} else {
-		rand.Seed(*randomSeed)
+		random.SeedFromString(*randomSeed)
 	}
 
-	pantheon := pantheon.GeneratePantheon()
-	displayPantheon(pantheon)
+	newPantheon := pantheon.GeneratePantheon()
+	displayPantheon(newPantheon)
 }
