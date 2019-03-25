@@ -24,15 +24,13 @@ func displayPantheon(pantheon pantheon.Pantheon) {
 
 		fmt.Println("## Domains")
 		for _, domain := range deity.Domains {
-			fmt.Println(domain)
+			fmt.Println("- " + domain)
 		}
-
-		fmt.Println("\n")
 	}
 
-	fmt.Println("Relationships\n")
+	fmt.Println("Relationships")
 	for _, relationship := range pantheon.Relationships {
-		fmt.Println(relationship.Origin.Name + " " + relationship.Descriptor + " " + relationship.Target.Name)
+		fmt.Println("- " + relationship.Origin.Name + " " + relationship.Descriptor + " " + relationship.Target.Name)
 	}
 }
 
