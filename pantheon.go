@@ -8,8 +8,7 @@ import (
 )
 
 var (
-	descriptors = []string{"is parent to", "hates", "loves", "fears", "respects", "is amused by", "is chagrined by"}
-	genders     = []string{"male", "female", "none"}
+	genders = []string{"male", "female", "none"}
 )
 
 // Deity is a fictional god or goddess
@@ -35,18 +34,26 @@ type Relationship struct {
 }
 
 // GenerateDeity generates a random deity
-func GenerateDeity() Deity {
+func (pantheon Pantheon) GenerateDeity() Deity {
 	var deity Deity
 	var domain string
+	var allDomains []string
 
 	numberOfDomains := rand.Intn(3) + 1
+
+	for _, deity := range pantheon.Deities {
+		for _, d := range deity.Domains {
+			allDomains = append(allDomains, d)
+		}
+	}
 
 	for i := 0; i < numberOfDomains; i++ {
 		domain = random.Item(domains)
 
 		// Only add domain if it isn't already in Domains slice
-		if !inSlice(domain, deity.Domains) {
+		if !inSlice(domain, deity.Domains) && !inSlice(domain, allDomains) {
 			deity.Domains = append(deity.Domains, domain)
+			allDomains = append(allDomains, domain)
 		}
 	}
 
@@ -60,22 +67,46 @@ func GenerateDeity() Deity {
 			deity.PersonalityTraits = append(deity.PersonalityTraits, trait)
 		}
 	}
+
 	deity.Name = randomName()
+
 	return deity
 }
 
 // GeneratePantheon creates a random pantheon of deities
 func GeneratePantheon(maxSize int) Pantheon {
-	var descriptor string
-	var relationship Relationship
-	var deity, target Deity
+	var deity Deity
 	var pantheon Pantheon
 
 	numberOfDeities := rand.Intn(maxSize) + 1
 
 	for i := 0; i < numberOfDeities; i++ {
-		deity = GenerateDeity()
+		deity = pantheon.GenerateDeity()
 		pantheon.Deities = append(pantheon.Deities, deity)
+	}
+
+	pantheon.Relationships = pantheon.GenerateRelationships()
+
+	return pantheon
+}
+
+// GenerateRelationships generates relationships between deities
+func (pantheon Pantheon) GenerateRelationships() []Relationship {
+	var descriptor string
+	var relationship Relationship
+	var relationships []Relationship
+	var target Deity
+
+	descriptors := []string{
+		"is parent to",
+		"hates",
+		"loves",
+		"fears",
+		"respects",
+		"is amused by",
+		"is chagrined by",
+		"worries about",
+		"is suspicious of",
 	}
 
 	for _, deity := range pantheon.Deities {
@@ -84,11 +115,11 @@ func GeneratePantheon(maxSize int) Pantheon {
 		relationship = Relationship{Origin: deity, Target: target, Descriptor: descriptor}
 
 		if deity.Name != target.Name {
-			pantheon.Relationships = append(pantheon.Relationships, relationship)
+			relationships = append(relationships, relationship)
 		}
 	}
 
-	return pantheon
+	return relationships
 }
 
 func inSlice(value string, slice []string) bool {

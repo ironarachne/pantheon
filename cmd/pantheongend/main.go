@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"time"
 
@@ -25,6 +26,16 @@ func getPantheon(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newPantheon)
 }
 
+func getRandomPantheon(w http.ResponseWriter, r *http.Request) {
+	var newPantheon pantheon.Pantheon
+
+	rand.Seed(time.Now().UnixNano())
+
+	newPantheon = pantheon.GeneratePantheon(20)
+
+	json.NewEncoder(w).Encode(newPantheon)
+}
+
 func main() {
 	r := chi.NewRouter()
 
@@ -37,9 +48,7 @@ func main() {
 
 	r.Use(middleware.Timeout(60 * time.Second))
 
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("pantheongend"))
-	})
+	r.Get("/", getRandomPantheon)
 
 	r.Get("/{id}", getPantheon)
 
