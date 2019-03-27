@@ -36,6 +36,7 @@ func displayPantheon(pantheon pantheon.Pantheon) {
 
 func main() {
 	randomSeed := flag.String("s", "now", "Optional random generator seed")
+	maxSize := flag.Int("m", 28, "Maximum number of deities")
 
 	flag.Parse()
 
@@ -45,6 +46,6 @@ func main() {
 		random.SeedFromString(*randomSeed)
 	}
 
-	newPantheon := pantheon.GeneratePantheon()
+	newPantheon := pantheon.GeneratePantheon(*maxSize)
 	displayPantheon(newPantheon)
 }

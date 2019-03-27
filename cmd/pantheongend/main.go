@@ -20,7 +20,7 @@ func getPantheon(w http.ResponseWriter, r *http.Request) {
 
 	random.SeedFromString(id)
 
-	newPantheon = pantheon.GeneratePantheon()
+	newPantheon = pantheon.GeneratePantheon(20)
 
 	json.NewEncoder(w).Encode(newPantheon)
 }

@@ -65,13 +65,13 @@ func GenerateDeity() Deity {
 }
 
 // GeneratePantheon creates a random pantheon of deities
-func GeneratePantheon() Pantheon {
+func GeneratePantheon(maxSize int) Pantheon {
 	var descriptor string
 	var relationship Relationship
 	var deity, target Deity
 	var pantheon Pantheon
 
-	numberOfDeities := rand.Intn(28) + 3
+	numberOfDeities := rand.Intn(maxSize) + 1
 
 	for i := 0; i < numberOfDeities; i++ {
 		deity = GenerateDeity()
